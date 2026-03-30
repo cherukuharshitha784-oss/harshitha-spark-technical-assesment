@@ -1,0 +1,304 @@
+# harshitha-spark-technical-assesment
+
+Design a Ticket Management System.
+
+Requirements:
+1 . You must create 3 tables:
+
+users
+
+tickets
+
+departments, change any id datatype and use all DDL
+
+users :
+
+create table users(
+    user_id  int auto_increment primary_key,
+    name varchar(50),
+    password int()
+);
+insert into users(user_id,name,password) values (1,'harshi',123456),
+(2.'nissi',223344),
+(3,'eswar',156789),
+(4,'guru',990876),
+(5,'gani',567843);
+
+alter table users add name varchar;
+alter table user modify name varchar;
+drop table users;
+truncate table user;
+
+tickets :
+
+create table tickets(
+    booking_id int auto_increment primary_key,
+    name varchar(50),
+    email varchar(50),
+    seat no int()
+);
+
+
+insert into tickets(booking_id,name,email,seat no) values (101,'rani','rani12@gmail.com',110),
+(102,'raju','raju146@gmail.com',111),
+(103,'swetha','swetha22@gmail.com',112),
+(104,'raghu','raghu55@gmail.com',113),
+(105,'manu','manu678@gmail.com',114);
+
+alter table tickets add name varchar;
+alter table tickets modify email varchar;
+drop table ticketss;
+truncate table tickets;
+
+
+departments :
+
+create table department(
+    department_id  int auto_increment primary_key,
+    name varchar(50),
+    email varchar(50).
+
+);
+
+insert into departments(department_id,name,email) values (100,HR,nikhila12@gmail.com),
+(101,'developer','naveena146@gmail.com'),
+(102,'analyst','kalyani22@gmail.com'),
+(103,'data scientist','nithish554@gmail.com),
+(104,'software''pavani333@gmail.com)
+
+alter table departments add emailvarchar;
+alter table departments modify name varchar;
+drop table departments;
+truncate table departments;
+
+
+2 . Why using VARCHAR for ticket_id is a bad idea.
+
+VARCHAR stores text .
+Numeric types (INT, BIGINT) are much faster .
+Searching (WHERE ticket_id = ...).
+Indexing.
+Joining tables.
+
+3.Perform all following Operations
+
+All DML Commands
+
+Fetch Data (JOIN)
+
+Tickets without Department
+
+Users with Multiple Tickets
+
+
+
+insert,
+update,
+delete.
+
+Fetching data using JOIN in SQL means combining rows from two or more tables based on a related column.
+
+SELECT t.ticket_id, t.name,d.department
+FROM tickets t
+LEFT JOIN departments d
+ON t.department_id = d.department_id
+WHERE d.department_id IS NULL;
+
+SELECT user_id, COUNT(ticket_id) AS ticket_count
+FROM tickets
+GROUP BY user_id
+HAVING COUNT(ticket_id) > 1;
+
+4 . Replace NULL commission with 0 in a table & each column
+
+SELECT employee_id,
+       COALESCE(commission, 0) AS commission
+FROM employees;
+
+
+5 . Find 4th Highest Salary
+
+SELECT DISTINCT salary
+FROM employees
+ORDER BY salary DESC
+LIMIT 1 OFFSET 3;
+
+
+6 . What will happen if you DELETE without WHERE
+
+Every record in employees table is deleted .
+Table structure (columns, indexes) remains interact .
+
+7 . What is the difference between = vs LIKE
+
+1 . = (Equals Operator)
+Used for exact match
+No wildcards allowed.
+
+2 . Like : (pattern matching)
+
+Used for searching patterns
+Works with wildcards.
+
+8 . Write a query for 'I%Love%ALGONEX'
+
+SELECT *
+FROM employees
+WHERE name LIKE 'I%Love%ALGONEX';
+
+9 .Write any 10 MySQL fucntions with a clear examples
+
+1. Count()   : count rows
+
+   SELECT COUNT(*) AS total_employees
+FROM employees;
+
+2. Sum() : total of columns
+
+SELECT SUM(salary) AS total_salary
+FROM employees;
+
+3. Avarege () : avg value
+
+SELECT AVG(salary) AS avg_salary
+FROM employees;
+
+4. Max() : highest value
+
+SELECT MAX(salary) AS highest_salary
+FROM employees;
+
+5. Min()  : lowest value
+
+select min(salary) As lowest_salary
+FROM employees;
+
+6. Upper() : convert to uppercase
+
+SELECT UPPER(mail) AS mail_upper
+FROM employees;
+
+7. LOWER() – Convert to lowercase
+
+SELECT LOWER(name) AS name_lower
+FROM employees;
+
+8. NOW() – Current date & time
+
+SELECT NOW();
+
+9. LENGTH() – String length
+
+SELECT email, LENGTH(email) AS emaillength
+FROM employees;
+
+10. COALESCE() – Handle NULL values
+
+SELECT name, COALESCE(commission, 0) AS commission
+FROM employees;
+
+10 . what is Lambda Function and list comprehension, give an example for each
+
+Lambda Function:
+
+A lambda function is a small anonymous function (no name) used for short operations.
+ Syntax:
+
+add = lambda a, b: a + b
+print(add(3, 5));
+
+11 . Write a code for factorial & even/odd of a number within a single function
+
+
+DELIMITER //
+
+CREATE FUNCTION factorial_even_odd(n INT)
+RETURNS VARCHAR(255)
+BEGIN
+     result VARCHAR(255);
+
+    IF n % 2 = 0 THEN
+        SET result = CONCAT('Factorial: ', fact, ' | Even Number');
+    ELSE
+        SET result = CONCAT('Factorial: ', fact, ' | Odd Number');
+    END IF;
+
+    RETURN result;
+END //
+
+DELIMITER ;
+
+CALL factorial_even_odd(n INT);
+
+12 . Write a query structure for Triggers/SP/Views/CTE/Sub query types
+
+Stored procedures :
+
+DELIMITER //
+
+CREATE PROCEDURE procedure_name(IN param1 datatype, OUT param2 datatype)
+BEGIN
+    -- SQL logic
+END //
+
+DELIMITER ;
+
+1 . IN parameter :
+
+CREATE PROCEDURE get_customer_by_id(IN cust_id INT)
+BEGIN
+    SELECT * FROM customers WHERE id = cust_id;
+END;
+
+2 . Out parameter :
+
+CREATE PROCEDURE get_total_count(OUT total INT)
+BEGIN
+    SELECT COUNT(*) INTO total FROM customers;
+END;
+
+3 . INOUT parameter :
+
+CREATE PROCEDURE update_value(INOUT num INT)
+BEGIN
+    SET num = num * 2;
+END;
+
+views  structure:
+
+CREATE VIEW view_name AS
+SELECT column1, column2
+FROM table_name
+WHERE condition;
+
+1 . Simple View :
+
+CREATE VIEW simple_view AS
+SELECT id, name, salary
+FROM employees;
+
+2 . complex view :
+
+CREATE VIEW complex_view AS
+SELECT e.name, d.department_name
+FROM employees e
+JOIN departments d ON e.dept_id = d.id;
+
+3 . Metrialised view :
+
+CREATE MATERIALIZED VIEW sales_summary AS
+SELECT product_id, SUM(amount)
+FROM sales
+GROUP BY product_id;
+
+ 13 . What AI models you’re using, how you’ll write a best prompt for better result
+
+To get high-quality output, prompts should be clear, specific, and structured.
+
+1. Define the task clearly
+2. Provide context
+3. Specify output format
+4. Add constraints
+5. Give examples 
+
+COMMIT :
